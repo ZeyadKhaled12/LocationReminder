@@ -8,7 +8,11 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 
+
 @VisibleForTesting(otherwise = VisibleForTesting.NONE)
+
+//Todo use the awaitValue method and write an assert statement that checks that the newTaskEvent was triggered
+
 fun <T> LiveData<T>.awaitValue(
     time: Long = 2,
     timeUnit: TimeUnit = TimeUnit.SECONDS,
@@ -28,7 +32,7 @@ fun <T> LiveData<T>.awaitValue(
     try {
         afterObserve.invoke()
 
-        // Don't wait indefinitely if the LiveData is not set.
+        //Todo Don't wait indefinitely if the LiveData is not set.
         if (!latch.await(time, timeUnit)) {
             throw TimeoutException("LiveData value was never set.")
         }

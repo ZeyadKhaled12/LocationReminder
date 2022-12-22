@@ -52,6 +52,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback{
         setHasOptionsMenu(true)
         setDisplayHomeAsUpEnabled(true)
 
+
         binding.saveButton.setOnClickListener {
             onLocationSelected()
         }
@@ -62,6 +63,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback{
 
     private fun onLocationSelected() {
 
+
         map.myLocation?.let {location ->
             _viewModel.latitude.value = location.latitude
             _viewModel.longitude.value = location.longitude
@@ -70,12 +72,12 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback{
     }
 
 
-    //called when fragment open to call map
     override fun onMapReady(p0: GoogleMap) {
         val zoomLevel = 15f
 
         enableMyLocation()
         map = p0
+
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(p0.myLocation.latitude,
             p0.myLocation.longitude), zoomLevel))
         map.addMarker(MarkerOptions().position(LatLng(p0.myLocation.latitude,
@@ -86,11 +88,12 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback{
     }
 
 
-    //get permissions from the user to access the current location when map get ready
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
         grantResults: IntArray) {
+
         if (requestCode == REQUEST_LOCATION_PERMISSION) {
             if (grantResults.isNotEmpty() && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 enableMyLocation()
@@ -110,10 +113,12 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback{
             true
         }
         R.id.hybrid_map -> {
+
             map.mapType = GoogleMap.MAP_TYPE_HYBRID
             true
         }
         R.id.satellite_map -> {
+
             map.mapType = GoogleMap.MAP_TYPE_SATELLITE
             true
         }
@@ -124,15 +129,17 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback{
         else -> super.onOptionsItemSelected(item)
     }
 
-    //check permissions from user
+
     private fun isPermissionGranted() : Boolean {
         return ContextCompat.checkSelfPermission(
             this,
             Manifest.permission.ACCESS_FINE_LOCATION) === PackageManager.PERMISSION_GRANTED
     }
 
+
     @SuppressLint("MissingPermission")
     private fun enableMyLocation() {
+
         if (isPermissionGranted()) {
             map.isMyLocationEnabled = true
         }
@@ -144,6 +151,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback{
             )
         }
     }
+
 
     private fun setPoiClick(map: GoogleMap) {
         map.setOnPoiClickListener { poi ->
@@ -157,9 +165,9 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback{
     }
 
 
-    //give the  map style depend on json file
     private fun setMapStyle(map: GoogleMap) {
         try {
+
             val success = map.setMapStyle(
                 MapStyleOptions.loadRawResourceStyle(
                     this,
@@ -175,7 +183,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback{
         }
     }
 
-    //get location when user click on  map
+
     private fun setMapLongClick(map: GoogleMap) {
         map.setOnMapLongClickListener { latLng ->
             map.addMarker(

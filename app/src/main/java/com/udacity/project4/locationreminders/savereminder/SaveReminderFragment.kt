@@ -97,9 +97,12 @@ class SaveReminderFragment : BaseFragment() {
 
     @TargetApi(29 )
     private fun requestForegroundAndBackgroundLocationPermissions() {
+
         if (foregroundAndBackgroundLocationPermissionApproved())
             return
         var permissionsArray = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+
+
         val resultCode = when {
             runningQOrLater -> {
                 permissionsArray += Manifest.permission.ACCESS_BACKGROUND_LOCATION
@@ -111,22 +114,30 @@ class SaveReminderFragment : BaseFragment() {
     }
 
     private fun checkDeviceLocationSettingsAndStartGeofence(resolve:Boolean = true) {
+
         val locationRequest = LocationRequest.create().apply {
             priority = LocationRequest.PRIORITY_LOW_POWER
         }
         val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
+
+
         val settingsClient = LocationServices.getSettingsClient(this)
         val locationSettingsResponseTask =
             settingsClient.checkLocationSettings(builder.build())
         locationSettingsResponseTask.addOnFailureListener { exception ->
+
             if (exception is ResolvableApiException && resolve){
                 try {
                     exception.startResolutionForResult(this@SaveReminderFragment,
                         REQUEST_TURN_DEVICE_LOCATION_ON)
-                } catch (sendEx: IntentSender.SendIntentException) {
+
+                }
+                catch (sendEx: IntentSender.SendIntentException) {
                     Log.d(TAG, "Error getting location settings resolution: " + sendEx.message)
                 }
-            } else {
+            }
+
+            else {
                 Snackbar.make(
                     requireView(),
                     R.string.location_required_error, Snackbar.LENGTH_INDEFINITE
@@ -135,6 +146,7 @@ class SaveReminderFragment : BaseFragment() {
                 }.show()
             }
         }
+
         locationSettingsResponseTask.addOnCompleteListener {
             if ( it.isSuccessful ) {
                 addGeofenceForClue()
@@ -142,12 +154,15 @@ class SaveReminderFragment : BaseFragment() {
         }
     }
 
+
     @TargetApi(29)
     private fun foregroundAndBackgroundLocationPermissionApproved(): Boolean {
+
         val foregroundLocationApproved = (
                 PackageManager.PERMISSION_GRANTED ==
                         ActivityCompat.checkSelfPermission(this,
                             Manifest.permission.ACCESS_FINE_LOCATION))
+
         val backgroundPermissionApproved =
             if (runningQOrLater) {
                 PackageManager.PERMISSION_GRANTED ==
@@ -157,6 +172,7 @@ class SaveReminderFragment : BaseFragment() {
             } else {
                 true
             }
+
         return foregroundLocationApproved && backgroundPermissionApproved
     }
 
@@ -189,11 +205,15 @@ class SaveReminderFragment : BaseFragment() {
         }
     }
 
+
     private fun removeGeofences() {
+
         if (!foregroundAndBackgroundLocationPermissionApproved()) {
             return
         }
+
         geofencingClient.removeGeofences(geofencePendingIntent)?.run {
+
             addOnSuccessListener {
                 Log.d(TAG, getString(R.string.geofences_removed))
                 Toast.makeText(requireContext(), R.string.geofences_removed, Toast.LENGTH_SHORT)

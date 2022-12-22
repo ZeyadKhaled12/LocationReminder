@@ -55,7 +55,9 @@ class ReminderListFragmentTest {
 
     @Before
     fun init() {
-        stopKoin()//stop the original app koin
+
+        stopKoin()
+
         appContext = getApplicationContext()
         val myModule = module {
             viewModel {
@@ -70,15 +72,21 @@ class ReminderListFragmentTest {
                     get() as ReminderDataSource
                 )
             }
-            single { RemindersLocalRepository(get()) as ReminderDataSource }
+            single {
+
+                RemindersLocalRepository(get()) as ReminderDataSource }
             single { LocalDB.createRemindersDao(appContext) }
         }
+
+
 
         startKoin {
             modules(listOf(myModule))
         }
 
+
         repo = get()
+
 
         runBlocking {
             repo.deleteAllReminders()
@@ -89,13 +97,18 @@ class ReminderListFragmentTest {
     @Test
     fun navigateToSaveReminderFragment () {
 
+
         val scenario = launchFragmentInContainer<ReminderListFragment>(Bundle(), R.style.AppTheme)
+
         val navController = mock(NavController::class.java)
+
         scenario.onFragment {
             Navigation.setViewNavController(it.view!!, navController)
         }
 
+
         onView(withId(R.id.addReminderFAB)).perform(click())
+
 
         verify(navController).navigate(
             ReminderListFragmentDirections.toSaveReminder()
@@ -105,10 +118,14 @@ class ReminderListFragmentTest {
     @Test
     fun reminderShow(): ViewInteraction? = runBlocking {
 
+
         val rm = ReminderDTO("Egypt", "Food Restaurant", "Cairo", 30.14870719, 31.34233941)
+
+
         repo.saveReminder(rm)
 
         launchFragmentInContainer<ReminderListFragment>(Bundle(), R.style.AppTheme)
+
 
         onView(withId(R.id.reminderssRecyclerView))
             .perform(
@@ -121,13 +138,19 @@ class ReminderListFragmentTest {
 
     @Test
     fun dataShow(): ViewInteraction? = runBlocking {
+
+
         val rm = ReminderDTO("Egypt", "Food Restaurant", "Cairo", 30.14870719, 31.34233941)
+
 
         repo.saveReminder(rm)
 
+
         repo.deleteAllReminders()
 
+
         launchFragmentInContainer<ReminderListFragment>(Bundle(), R.style.AppTheme)
+
 
         onView(withId(R.id.noDataTextView)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }

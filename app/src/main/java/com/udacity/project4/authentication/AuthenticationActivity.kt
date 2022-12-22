@@ -33,6 +33,7 @@ class AuthenticationActivity : AppCompatActivity() {
 
         binding.lifecycleOwner = this
 
+
         binding.authButton.setOnClickListener { launchSignInFlow() }
     }
 
@@ -63,7 +64,6 @@ class AuthenticationActivity : AppCompatActivity() {
                             "${FirebaseAuth.getInstance().currentUser?.displayName}!"
                 )
             } else {
-
                 Log.i(TAG, "Sign in unsuccessful ${response?.error?.errorCode}")
             }
         }

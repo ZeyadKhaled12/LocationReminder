@@ -36,18 +36,23 @@ import org.koin.test.AutoCloseKoinTest
 import org.koin.test.get
 
 @RunWith(AndroidJUnit4::class)
+
+
 @LargeTest
-//END TO END test to black box test the app
+
 class RemindersActivityTest :
-    AutoCloseKoinTest() {// Extended Koin Test - embed autoclose @after method to close Koin after every test
+    AutoCloseKoinTest() {
 
     private lateinit var repo: ReminderDataSource
     private lateinit var appContext: Application
 
     private val binding = DataBindingIdlingResource()
 
+
+
     @Before
     fun init() {
+
         stopKoin()//stop the original app koin
         appContext = getApplicationContext()
         val myModule = module {
@@ -70,12 +75,15 @@ class RemindersActivityTest :
         startKoin {
             modules(listOf(myModule)) }
 
+
         repo = get()
+
 
         runBlocking {
             repo.deleteAllReminders()
         }
     }
+
 
     @Before
     fun resRegisterId() {
@@ -86,11 +94,14 @@ class RemindersActivityTest :
     @Test
     fun reminderSaveErrorShow() {
 
+        //Todo Start up Tasks screen.
         val activityScenario = ActivityScenario.launch(RemindersActivity::class.java)
+
         binding.monitorActivity(activityScenario)
 
         Espresso.onView(ViewMatchers.withId(R.id.addReminderFAB)).perform(ViewActions.click())
         Espresso.onView(ViewMatchers.withId(R.id.saveReminder)).perform(ViewActions.click())
+
 
         val snackBarMessage = appContext.getString(R.string.err_enter_title)
         Espresso.onView(ViewMatchers.withText(snackBarMessage))
@@ -111,7 +122,9 @@ class RemindersActivityTest :
         Espresso.closeSoftKeyboard()
         Espresso.onView(ViewMatchers.withId(R.id.saveReminder)).perform(ViewActions.click())
 
+
         val snackBarMessage = appContext.getString(R.string.err_select_location)
+
         Espresso.onView(ViewMatchers.withText(snackBarMessage))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
 
@@ -137,6 +150,7 @@ class RemindersActivityTest :
         Espresso.onView(withId(R.id.saveButton)).perform(ViewActions.click())
 
         Espresso.onView(ViewMatchers.withId(R.id.saveReminder)).perform(ViewActions.click())
+
 
         Espresso.onView(ViewMatchers.withText(R.string.reminder_saved)).inRoot(
             RootMatchers.withDecorView(

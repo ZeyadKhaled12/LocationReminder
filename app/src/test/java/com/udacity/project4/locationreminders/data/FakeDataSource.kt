@@ -3,18 +3,25 @@ package com.udacity.project4.locationreminders.data
 import com.udacity.project4.locationreminders.data.dto.ReminderDTO
 import com.udacity.project4.locationreminders.data.dto.Result
 
+
 class FakeDataSource(var listOfReminders: MutableList<ReminderDTO>? = mutableListOf())
     : ReminderDataSource {
 
+
     private var errorReturn = false
 
+
     override suspend fun getReminders(): Result<List<ReminderDTO>> {
+
         if (errorReturn) {
             return Result.Error(
                 "Get Error Reminder"
             )
         }
+
         listOfReminders?.let { return Result.Success(it) }
+
+
         return Result.Error("not found!")
     }
 

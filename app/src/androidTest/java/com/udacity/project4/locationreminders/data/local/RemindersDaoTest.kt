@@ -32,11 +32,14 @@ class RemindersDaoTest {
 
     @Before
     fun openDb() {
+
         database = Room.inMemoryDatabaseBuilder(
             ApplicationProvider.getApplicationContext(),
             RemindersDatabase::class.java
         ).allowMainThreadQueries().build()
     }
+
+
 
     @Test
     fun reminderSaveById() = runBlockingTest {
@@ -44,7 +47,9 @@ class RemindersDaoTest {
 
         database.reminderDao().saveReminder(reminder)
 
+
         val result = database.reminderDao().getReminderById(reminder.id)
+
 
         assertThat(result as ReminderDTO, notNullValue())
         assertThat(result.id, `is`(reminder.id))
@@ -58,10 +63,13 @@ class RemindersDaoTest {
 
     @Test
     fun reminderGetById() = runBlockingTest {
+
         val reminder = ReminderDTO("Egypt", "Food Restaurant", "Cairo", 30.14870719, 31.34233941)
 
 
+
         database.reminderDao().saveReminder(reminder)
+
 
         assertThat(database.reminderDao().getReminders(), `is`(notNullValue()))
     }
@@ -74,8 +82,10 @@ class RemindersDaoTest {
 
         database.reminderDao().deleteAllReminders()
 
+
         assertThat(database.reminderDao().getReminders(), `is`(emptyList()))
     }
+
 
     @After
     fun closeDb() = database.close()

@@ -40,6 +40,7 @@ class SaveReminderViewModelTest {
     @Before
     fun insertViewModel() {
         remindersRepository = FakeDataSource()
+
         viewModel = SaveReminderViewModel(ApplicationProvider.getApplicationContext(), remindersRepository)
     }
 
@@ -50,6 +51,7 @@ class SaveReminderViewModelTest {
         val rm = ReminderDTO("Egypt", "Food Restaurant", "Cairo", 30.14870719, 31.34233941)
 
         Truth.assertThat(viewModel.validateEnteredData(rm)).isFalse()
+
         assertThat(viewModel.showSnackBarInt.awaitValue()).isEqualTo(R.string.err_select_location)
     }
 
@@ -57,9 +59,12 @@ class SaveReminderViewModelTest {
     @SuppressLint("CheckResult")
     @Test
     fun reminderSave(){
+
         val rm = ReminderDTO("Egypt", "Food Restaurant", "Cairo", 30.14870719, 31.34233941)
         mainRuleCr.pauseDispatcher()
         viewModel.saveReminder(rm)
+
+
         assertThat(viewModel.showLoading.awaitValue())
     }
 
@@ -69,6 +74,7 @@ class SaveReminderViewModelTest {
         val rm = ReminderDTO("Egypt", "Food Restaurant", "Cairo", 30.14870719, 31.34233941)
 
         Truth.assertThat(viewModel.validateEnteredData(rm)).isFalse()
+
         assertThat(viewModel.showSnackBarInt.awaitValue()).isEqualTo(R.string.err_enter_title)
     }
 

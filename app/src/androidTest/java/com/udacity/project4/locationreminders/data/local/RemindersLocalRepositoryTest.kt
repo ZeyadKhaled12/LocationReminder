@@ -33,7 +33,6 @@ class RemindersLocalRepositoryTest {
 
     @Before
     fun openDb() {
-
         database = Room.inMemoryDatabaseBuilder(
             ApplicationProvider.getApplicationContext(),
             RemindersDatabase::class.java
@@ -47,13 +46,20 @@ class RemindersLocalRepositoryTest {
 
     @Test
     fun reminderSaveById() = runBlocking {
+
+
         val rm = ReminderDTO("Egypt", "Food Restaurant", "Cairo", 30.14870719, 31.34233941)
 
         repoOfLocalReminders.saveReminder(rm)
+
+
         val result = repoOfLocalReminders.getReminder(rm.id) as? Result.Success
 
         assertThat(result is Result.Success, `is`(true))
+
+
         result as Result.Success
+
 
         assertThat(result.data.title, `is`(rm.title))
         assertThat(result.data.description, `is`(rm.description))
@@ -65,19 +71,26 @@ class RemindersLocalRepositoryTest {
 
     @Test
     fun reminderDeleteById()= runBlocking {
+
         val rm = ReminderDTO("Egypt", "Food Restaurant", "Cairo", 30.14870719, 31.34233941)
+
         repoOfLocalReminders.saveReminder(rm)
+
+
         repoOfLocalReminders.deleteAllReminders()
 
         val result = repoOfLocalReminders.getReminders()
         assertThat(result is Result.Success, `is`(true))
         result as Result.Success
+
+
         assertThat(result.data, `is` (emptyList()))
     }
 
     @Test
     fun reminderReturnByError() = runBlocking {
         val rm = ReminderDTO("Egypt", "Food Restaurant", "Cairo", 30.14870719, 31.34233941)
+
         repoOfLocalReminders.saveReminder(rm)
         repoOfLocalReminders.deleteAllReminders()
 
@@ -86,6 +99,7 @@ class RemindersLocalRepositoryTest {
         result as Result.Error
         assertThat(result.message, `is`("Not found"))
     }
+
 
     @After
     fun cleanUp() {

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <!--Data item that holds the reminder details-->
+        <!--Todo Data item that holds the reminder details-->
         <variable
             name="reminderDataItem"
             type="com.udacity.project4.locationreminders.reminderslist.ReminderDataItem" />
@@ -16,6 +16,7 @@
         android:gravity="center"
         android:orientation="vertical"
         tools:context=".locationreminders.ReminderDescriptionActivity">
+<!--        Todo creating textfield to display title of reminder no ui-->
         <TextView
             android:id="@+id/reminder_title"
             android:layout_width="wrap_content"
@@ -27,7 +28,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginLeft="24dp" />
-
+        <!--   Todo     creating textfield to display description of reminder on ui-->
         <TextView
             android:id="@+id/reminder_description"
             android:layout_width="wrap_content"
@@ -37,7 +38,7 @@
             android:text="@{@string/detail_description(reminderDataItem.description)}"
             app:layout_constraintStart_toStartOf="@+id/reminder_title"
             app:layout_constraintTop_toBottomOf="@+id/reminder_title" />
-
+        <!--        Todo creating textfield to display location of reminder on ui-->
         <TextView
             android:id="@+id/location_textView"
             android:layout_width="wrap_content"
@@ -49,6 +50,7 @@
             app:layout_constraintTop_toBottomOf="@+id/reminder_description"
            />
 
+        <!--        Todo creating textfield to display coordinates(longitude, latitude) of reminder no ui-->
         <TextView
             android:id="@+id/coordinates_textView"
             android:layout_width="wrap_content"

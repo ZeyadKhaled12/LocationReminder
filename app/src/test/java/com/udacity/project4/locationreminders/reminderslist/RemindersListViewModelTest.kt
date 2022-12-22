@@ -37,7 +37,10 @@ class RemindersListViewModelTest {
 
     @Before
     fun setupViewModel() {
+
         repoReminder = FakeDataSource()
+
+
         viewModel = RemindersListViewModel(ApplicationProvider.getApplicationContext(), repoReminder)
     }
 
@@ -45,13 +48,19 @@ class RemindersListViewModelTest {
     @SuppressLint("CheckResult")
     @Test
     fun remindersShowLoading() {
+
+
         rule.pauseDispatcher()
+
 
         viewModel.loadReminders()
 
+
         assertThat(viewModel.showLoading.awaitValue())
 
+
         rule.resumeDispatcher()
+
 
         assertThat(viewModel.showLoading.awaitValue())
 
@@ -59,10 +68,12 @@ class RemindersListViewModelTest {
 
     @Test
     fun remindersLoad() = ruleCoroutines.runBlockingTest  {
+
         val reminder = ReminderDTO("My Store", "Pick Stuff", "Abuja", 6.454202, 7.599545)
 
         repoReminder.saveReminder(reminder)
         viewModel.loadReminders()
+
 
         assertThat(viewModel.remindersList.awaitValue())
     }
@@ -70,11 +81,14 @@ class RemindersListViewModelTest {
     @ExperimentalCoroutinesApi
     @Test
     fun remindersLoadSnackValue() {
+
         ruleCoroutines.pauseDispatcher()
 
         repoReminder.errorReturn(true)
 
+
         viewModel.loadReminders()
+
 
         rule.resumeDispatcher()
 

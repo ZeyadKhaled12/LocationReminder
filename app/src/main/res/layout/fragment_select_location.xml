@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+<!--        Todo Add the map fragment for the user to select the location-->
         <fragment
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -24,7 +25,8 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
+        <!--        Todo Add the button with id saveButton to called onLocationSelected fun-->
+        <!--        Todo Tip: What is onLocationSelected fun? That's explained in SelectLocationFragment-->
         <TextView
             android:id="@+id/saveButton"
             android:layout_width="0dp"
