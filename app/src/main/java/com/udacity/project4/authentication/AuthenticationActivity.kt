@@ -7,10 +7,10 @@ import android.util.Log
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.udacity.project4.R
 import com.firebase.ui.auth.IdpResponse
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
+import com.udacity.project4.R
 import com.udacity.project4.databinding.ActivityAuthenticationBinding
 
 
@@ -44,7 +44,6 @@ class AuthenticationActivity : AppCompatActivity() {
             AuthUI.IdpConfig.EmailBuilder().build(), AuthUI.IdpConfig.GoogleBuilder().build()
         )
 
-
         startActivityForResult(
             AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(
                 providers
@@ -57,7 +56,7 @@ class AuthenticationActivity : AppCompatActivity() {
         if (requestCode == SIGN_IN_RESULT_CODE) {
             val response = IdpResponse.fromResultIntent(data)
             if (resultCode == Activity.RESULT_OK) {
-                // Successfully signed in user.
+
                 Log.i(
                     TAG,
                     "Successfully signed in user " +

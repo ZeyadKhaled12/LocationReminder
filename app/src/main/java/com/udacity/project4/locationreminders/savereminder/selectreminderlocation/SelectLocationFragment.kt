@@ -132,7 +132,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback{
 
     private fun isPermissionGranted() : Boolean {
         return ContextCompat.checkSelfPermission(
-            this,
+            requireActivity(),
             Manifest.permission.ACCESS_FINE_LOCATION) === PackageManager.PERMISSION_GRANTED
     }
 
@@ -145,7 +145,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback{
         }
         else {
             ActivityCompat.requestPermissions(
-                this,
+                requireActivity(),
                 arrayOf<String>(Manifest.permission.ACCESS_FINE_LOCATION),
                 REQUEST_LOCATION_PERMISSION
             )
@@ -170,7 +170,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback{
 
             val success = map.setMapStyle(
                 MapStyleOptions.loadRawResourceStyle(
-                    this,
+                    requireActivity(),
                     R.raw.map_style
                 )
             )

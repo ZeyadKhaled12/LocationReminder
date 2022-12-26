@@ -82,6 +82,7 @@ class GeofenceTransitionsJobIntentService : JobIntentService(), CoroutineScope {
 
 
 object GeofenceUtils {
+    const val raduisMeters = 100f
     const val NEVER_EXPIRES = Geofence.NEVER_EXPIRE
 }
 

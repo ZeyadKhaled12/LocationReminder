@@ -8,7 +8,6 @@ import com.google.common.truth.Truth
 import com.google.common.truth.Truth.assertThat
 import com.udacity.project4.R
 import com.udacity.project4.locationreminders.CoroutineMainRule
-import com.udacity.project4.locationreminders.awaitValue
 import com.udacity.project4.locationreminders.data.FakeDataSource
 import com.udacity.project4.locationreminders.data.dto.ReminderDTO
 

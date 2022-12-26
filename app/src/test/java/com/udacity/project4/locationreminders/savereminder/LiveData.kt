@@ -1,22 +1,19 @@
-package com.udacity.project4.locationreminders
+package com.udacity.project4.locationreminders.savereminder
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import java.lang.AssertionError
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 
 @VisibleForTesting(otherwise = VisibleForTesting.NONE)
 
-//Todo use the awaitValue method and write an assert statement that checks that the newTaskEvent was triggered
-
 fun <T> LiveData<T>.awaitValue(
     time: Long = 2,
     timeUnit: TimeUnit = TimeUnit.SECONDS,
     afterObserve: () -> Unit = {}
-): AssertionError? {
+): T {
     var data: T? = null
     val latch = CountDownLatch(1)
     val observer = object : Observer<T> {
@@ -30,8 +27,6 @@ fun <T> LiveData<T>.awaitValue(
 
     try {
         afterObserve.invoke()
-
-        //Todo Don't wait indefinitely if the LiveData is not set.
 
         if (!latch.await(time, timeUnit)) {
             throw TimeoutException("LiveData value was never set.")

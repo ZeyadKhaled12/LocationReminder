@@ -1,16 +1,20 @@
+@file:Suppress("DEPRECATION")
+
 package com.udacity.project4.locationreminders.reminderslist
 
-import android.annotation.SuppressLint
+
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.google.common.truth.ExpectFailure.assertThat
 import com.udacity.project4.locationreminders.CoroutineMainRule
-import com.udacity.project4.locationreminders.awaitValue
+import com.udacity.project4.locationreminders.savereminder.awaitValue
 import com.udacity.project4.locationreminders.data.FakeDataSource
 import com.udacity.project4.locationreminders.data.dto.ReminderDTO
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.test.DelayController
 import kotlinx.coroutines.test.pauseDispatcher
+import kotlinx.coroutines.test.resumeDispatcher
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.After
 import org.junit.Before
@@ -18,7 +22,10 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.context.stopKoin
+import kotlin.coroutines.ContinuationInterceptor
 
+
+@Suppress("DEPRECATION")
 @RunWith(AndroidJUnit4::class)
 @ExperimentalCoroutinesApi
 class RemindersListViewModelTest {
@@ -32,7 +39,7 @@ class RemindersListViewModelTest {
 
     private lateinit var repoReminder: FakeDataSource
 
-    //Subject under test
+
     private lateinit var viewModel: RemindersListViewModel
 
     @Before
@@ -45,24 +52,23 @@ class RemindersListViewModelTest {
     }
 
     @ExperimentalCoroutinesApi
-    @SuppressLint("CheckResult")
     @Test
     fun remindersShowLoading() {
 
 
-        rule.pauseDispatcher()
+        (ruleCoroutines.coroutineContext[ContinuationInterceptor]!! as DelayController).pauseDispatcher()
 
 
         viewModel.loadReminders()
 
 
-        assertThat(viewModel.showLoading.awaitValue())
+        assertThat(viewModel.showLoading.awaitValue()).isTrue()
 
 
-        rule.resumeDispatcher()
+        ruleCoroutines.resumeDispatcher()
 
 
-        assertThat(viewModel.showLoading.awaitValue())
+        assertThat(viewModel.showLoading.awaitValue()).isFalse()
 
     }
 
@@ -75,8 +81,9 @@ class RemindersListViewModelTest {
         viewModel.loadReminders()
 
 
-        assertThat(viewModel.remindersList.awaitValue())
+        assertThat(viewModel.remindersList.awaitValue()).isNotEmpty()
     }
+
 
     @ExperimentalCoroutinesApi
     @Test
@@ -90,7 +97,7 @@ class RemindersListViewModelTest {
         viewModel.loadReminders()
 
 
-        rule.resumeDispatcher()
+        ruleCoroutines.resumeDispatcher()
 
         assertThat(viewModel.showSnackBar.awaitValue()).isEqualTo("Error getting reminders")
     }

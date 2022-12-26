@@ -30,7 +30,7 @@ class SaveReminderViewModel(val app: Application, val dataSource: ReminderDataSo
         longitude.value = null
     }
 
-    fun validateAndSaveReminder(reminderData: ReminderDataItem) {
+    fun validateAndSaveReminder(reminderData: ReminderDTO) {
         if (validateEnteredData(reminderData)) {
             saveReminder(reminderData)
         }

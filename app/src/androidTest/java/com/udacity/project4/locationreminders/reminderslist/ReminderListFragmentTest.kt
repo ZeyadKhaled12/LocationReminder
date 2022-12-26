@@ -13,10 +13,9 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.assertion.ViewAssertions.*
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
-import org.koin.test.get
-
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
@@ -39,10 +38,10 @@ import org.koin.core.context.stopKoin
 import org.koin.dsl.module
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
+import org.koin.test.get
 
 @RunWith(AndroidJUnit4::class)
 @ExperimentalCoroutinesApi
-//UI Testing
 @MediumTest
 class ReminderListFragmentTest {
 
@@ -55,9 +54,7 @@ class ReminderListFragmentTest {
 
     @Before
     fun init() {
-
         stopKoin()
-
         appContext = getApplicationContext()
         val myModule = module {
             viewModel {
@@ -72,21 +69,11 @@ class ReminderListFragmentTest {
                     get() as ReminderDataSource
                 )
             }
-            single {
-
-                RemindersLocalRepository(get()) as ReminderDataSource }
+            single { RemindersLocalRepository(get()) as ReminderDataSource }
             single { LocalDB.createRemindersDao(appContext) }
         }
 
-
-
-        startKoin {
-            modules(listOf(myModule))
-        }
-
-
         repo = get()
-
 
         runBlocking {
             repo.deleteAllReminders()
@@ -116,7 +103,7 @@ class ReminderListFragmentTest {
     }
 
     @Test
-    fun reminderShow(): ViewInteraction? = runBlocking {
+    fun reminderShow(): Unit = runBlocking {
 
 
         val rm = ReminderDTO("Egypt", "Food Restaurant", "Cairo", 30.14870719, 31.34233941)
@@ -137,7 +124,7 @@ class ReminderListFragmentTest {
 
 
     @Test
-    fun dataShow(): ViewInteraction? = runBlocking {
+    fun dataShow(): Unit = runBlocking {
 
 
         val rm = ReminderDTO("Egypt", "Food Restaurant", "Cairo", 30.14870719, 31.34233941)
@@ -152,6 +139,6 @@ class ReminderListFragmentTest {
         launchFragmentInContainer<ReminderListFragment>(Bundle(), R.style.AppTheme)
 
 
-        onView(withId(R.id.noDataTextView)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withId(R.id.noDataTextView)).check(matches(ViewMatchers.isDisplayed()))
     }
 }
