@@ -11,6 +11,7 @@ import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -98,6 +99,8 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback{
             if (grantResults.isNotEmpty() && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 enableMyLocation()
             }
+        }else{
+            showMessage()
         }
     }
 
@@ -129,6 +132,23 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback{
         else -> super.onOptionsItemSelected(item)
     }
 
+    private fun showMessage(){
+        if (
+            ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
+        ) {
+            val show = AlertDialog.Builder(requireActivity())
+                .setTitle(R.string.location_permission)
+                .setMessage(R.string.permission_denied_explanation)
+                .setPositiveButton("OK") { _, _, ->
+                    enableMyLocation()
+                }
+                .create()
+                .show()
+
+        } else {
+            enableMyLocation()
+        }
+    }
 
     private fun isPermissionGranted() : Boolean {
         return ContextCompat.checkSelfPermission(
